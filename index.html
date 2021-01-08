@@ -477,12 +477,14 @@
 		<div class="direct-chat-messages">
 			<div class="chat-box-single-line">
 				<abbr id="chat_ts" class="timestamp"></abbr>
+				<input id="textline" type="text" class="form-control">
 			</div>			
 		
 			
         </div>
 	</div>
 	<div class="popup-messages-footer">
+		<button id="close" class="bg_none pull-left"><i class="glyphicon glyphicon-remove"></i> </button>
 		<textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea><button id="send" class="bg_none pull-right"><i class="glyphicon glyphicon-send"></i> </button>
 		<div class="btn-footer">
 			
@@ -644,17 +646,130 @@ $(function(){
 </script>
     <!-- END CUSTOM CHAT MODIFICATION-->
 
-    <!-- START CUSTOM LP INTERACTION -->
 <script type="text/javascript">
 
-let windowKit = new windowKit({
-	account: 37717971
-	//skillId: 12341234 - or optional skill ID
+$(document).ready(() => {
+  prepareToConnect();
 });
-windowKit.connect();
+
+function prepareToConnect() {
+    const account = 37717971;
+    LPUtils.getJWT(account).then(jwt => {
+      LPUtils.getDomain(account, 'asyncMessagingEnt').then(umsDomain => {
+        LPWs.connect(`wss://${umsDomain}/ws_api/account/${account}/messaging/consumer?v=3`)
+        .then(
+          openedSocket => handleOpenedSocket(openedSocket,jwt), 
+          errorOpening => {
+            console.log(`error opening connection ${errorOpening}\n`);
+            prepareToConnect();
+          });
+      });
+    }, errorGettingJwt => {      
+      console.log(`error ${errorGettingJwt} getting jwt for account ${account}\n`);
+    });
+  };
+
+
+function handleOpenedSocket(socket,jwt) {
+  console.log(`connection is opened.\n`);
+  socket.registerRequests(apiRequestTypes);
+
+  const me = myId(jwt);
+  
+  socket.initConnection({},[{ "type": ".ams.headers.ConsumerAuthentication", "jwt": jwt}]);
+  socket.onNotification(withType('MessagingEvent'),
+    body => body.changes.forEach(change => {
+      switch (change.event.type) {
+        case 'ContentEvent':
+          console.log(`${change.originatorId===me? 'you':'agent'}: ${change.event.message}\n`);
+      }
+    }));
+
+  // subscribe to open conversations metadata
+  socket.subscribeExConversations({
+    'convState': ['OPEN']
+  }).then(resp => {
+    let openConvs = {};
+    socket.onNotification(withSubscriptionID(resp.body.subscriptionId),
+      (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
+
+    $('#send').click(() => {
+      if (Object.keys(openConvs)[0]) {
+        publishTo(socket,Object.keys(openConvs)[0]);
+      } else  {
+        socket.consumerRequestConversation()
+          .then(resp => publishTo(socket,resp.body.conversationId));
+      }
+    });
+    $('#close').click(() => {
+      if (Object.keys(openConvs)[0]) {
+        socket.updateConversationField({
+            conversationId: Object.keys(openConvs)[0],
+            conversationField: [{
+                    field: "ConversationStateField",
+                    conversationState: "CLOSE"
+                }]
+        });
+      }
+      socket.ws.close();
+      socket.ws.onclose = (evt) => onCloseSocket(socket,evt);
+    });
+  });
+}
+
+function handleConversationNotification(socket,notificationBody,openConvs) {
+  notificationBody.changes.forEach(change => {
+    if (change.type === 'UPSERT') {
+      if (!openConvs[change.result.convId]) {
+        openConvs[change.result.convId] = change.result;
+        socket.subscribeMessagingEvents({
+          fromSeq: 0,
+          dialogId: change.result.convId
+        });
+      }
+    } else if (change.type === 'DELETE') {
+      delete openConvs[change.result.convId];
+      console.log(`conversation was closed.\n`);
+    }
+  });
+}
+
+function onCloseSocket(socket,evt) {
+  socket.ws = null;
+  console.log(`connection was closed with code ${evt.code}\n`);
+  prepareToConnect();
+  /*$('#send').prop('disabled', true).unbind('click');
+  $('#account').prop('disabled',false).val();      */  
+}
+
+function publishTo(socket,convID) {
+  socket.publishEvent({
+    dialogId: convID,
+    event: {
+      type: 'ContentEvent',
+      contentType: 'text/plain',
+      message: $('#textline').val()
+    }
+  })
+  .then(resp => $('#textline').val(''));
+}
+
+function withSubscriptionID(subscriptionID) {
+  return notif => notif.body.subscriptionId === subscriptionID;
+}
+
+function withType(type) {
+  return notif => notif.type.includes(type);
+}
+
+function myId(jwt) {
+  return JSON.parse(atob(jwt.split('.')[1])).sub;
+}
+
+const apiRequestTypes = ['cqm.SubscribeExConversations','ms.PublishEvent','cm.ConsumerRequestConversation','ms.SubscribeMessagingEvents','InitConnection','cm.UpdateConversationField'];
+
 
 </script>
-    <!-- END CUSTOM LP INTERACTION-->
     
 </body>
 </html>
