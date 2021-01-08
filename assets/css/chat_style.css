@@ -307,7 +307,8 @@
     position: relative;
 }
 
-@media (min-width: 1400px)
-.container {
-    width: ;
+@media (min-width: 1400px) {
+    .container {
+        width: 1370px;
+    }
 }
