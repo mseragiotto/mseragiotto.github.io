@@ -452,7 +452,7 @@
         <!-- Shop Method End-->
 
 <!--START CUSTOM CHAT MODIFICATION-->
-<div class="chat_button container text-center">
+<div id="start_chat" class="chat_button container text-center">
 	<div class="row">
 
         <div class="round hollow text-center">
@@ -627,10 +627,13 @@
 $(function(){
 	$("#addClass").click(function () {
 		$('#qnimate').addClass('popup-box-on');
+		$('#start_chat').css("display","none");
 		});
 
-		$("#removeClass").click(function () {
+	$("#removeClass").click(function () {
 		$('#qnimate').removeClass('popup-box-on');
+		$('#start_chat').css("display","block");
+
 		});
 })
 </script>
