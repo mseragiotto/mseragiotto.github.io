@@ -626,7 +626,7 @@
 <script type="text/javascript">
 $(function(){
 	let date = new Date();
-	let time = date.getDate()+date.getMonth()+date.getFullYear()+" - "+date.getHour()+":"date.getMinutes()+":"+date.getSeconds();
+	let time = date.getDate()+" "+date.getMonth()+" "+date.getFullYear()+" - "+date.getHour()+":"+date.getMinutes()+":"+date.getSeconds();
 	$('#chat_ts').html(time);
 	$("#addClass").click(function () {1
 		$('#qnimate').addClass('popup-box-on');
