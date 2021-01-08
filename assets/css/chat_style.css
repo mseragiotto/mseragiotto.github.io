@@ -108,7 +108,11 @@
 }
 
 
-
+.chat_button {
+    position: fixed;
+    top: 10vh;
+    left: 1vw;
+}
 
 
 .popup-box .popup-messages {
