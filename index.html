@@ -474,7 +474,7 @@
 	<div class="popup-messages">
 		<div class="direct-chat-messages">
 			<div class="chat-box-single-line">
-				<abbr class="timestamp">October 8th, 2015</abbr>
+				<abbr id="chat_ts" class="timestamp"></abbr>
 			</div>			
 		
 			
@@ -625,6 +625,8 @@
     <!-- START CUSTOM CHAT MODIFICATION -->
 <script type="text/javascript">
 $(function(){
+	let date = new Date()
+	$('#chat_ts').html(date);
 	$("#addClass").click(function () {
 		$('#qnimate').addClass('popup-box-on');
 		$('#start_chat').css("display","none");
