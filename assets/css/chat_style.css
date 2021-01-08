@@ -306,3 +306,8 @@
     padding: 5px 10px;
     position: relative;
 }
+
+@media (min-width: 1200px)
+.container {
+    width: ;
+}
