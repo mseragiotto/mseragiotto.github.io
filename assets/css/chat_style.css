@@ -109,9 +109,10 @@
 
 
 .chat_button {
+    transform: rotate(-90deg);
     position: fixed;
-    top: 10vh;
-    left: 1vw;
+    top: 7vh;
+    left: -41vw;
 }
 
 
