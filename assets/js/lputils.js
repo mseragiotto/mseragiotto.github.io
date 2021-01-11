@@ -38,7 +38,7 @@ class LPUtils {
       url: `https://${idpDomain}/api/account/${account}/authenticate`,
       async: true,
       crossDomain: true,
-      method: "POST",
+      type: "POST",
       jsonp: "callback",
       dataType: "jsonp",
       headers: {
