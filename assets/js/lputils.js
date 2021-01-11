@@ -43,7 +43,7 @@ class LPUtils {
       dataType: "json",
       contentType: "application/json",
       /*processData: false,*/
-      data: JSON.stringify({authCode : jwt})
+      data: JSON.stringify({authCode : jwt}),
       success: idpResp => res(idpResp.jwt) })));
     /**/
   }
