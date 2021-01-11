@@ -1,6 +1,6 @@
 class LPUtils {
   static getDomain(account, name) {
-    const domains = account.startsWith("le") ? "hc1n.dev.lprnd.net" : "adminlogin.liveperson.net";
+    const domains = /*account.startsWith("le") ? "hc1n.dev.lprnd.net" : */"adminlogin.liveperson.net";
     console.log(domains);
     return new Promise((res, rej) => $.ajax({
       url: `https://${domains}/csdr/account/${account}/service/${name}/baseURI.lpCsds?version=1.0`,
