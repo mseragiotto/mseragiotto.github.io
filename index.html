@@ -474,11 +474,11 @@
         </div>
 	</div>
 	<div id="text_container" class="popup-messages">
-		<div class="direct-chat-messages">
+		<!--<div class="direct-chat-messages">
 			<div class="chat-box-single-line">
 				<abbr id="chat_ts" class="timestamp"></abbr>
 			</div>						
-        </div>
+        </div>-->
 	</div>
 	<div class="popup-messages-footer">
 		<!--<textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>-->
@@ -681,13 +681,15 @@ function handleOpenedSocket(socket,jwt) {
     body => body.changes.forEach(change => {
       switch (change.event.type) {
         case 'ContentEvent':
+          let date = new Date();
+          let time = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" - "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
           $('#text_container').append(`
                       ${change.originatorId===me? 
                       '<br><div class="direct-chat-info clearfix">'+
-                      	'<div class="direct-chat-name pull-right">YOU</div>'+
+                      	'<div class="direct-chat-name pull-right">YOU - '+time+'</div>'+
                       '</div><div class="direct-chat-text pull-right">':
                       '<br><div class="direct-chat-info clearfix">'+
-                      	'<div class="direct-chat-name pull-left chat_left">AGENT</div>'+
+                      	'<div class="direct-chat-name pull-left chat_left">AGENT - '+time+'</div>'+
                       '</div><div class="direct-chat-text pull-left chat_left">'} ${change.event.message}</div><br>`);
           $('#text_container').scrollTop( $('#text_container')[0].scrollHeight );
       }
@@ -708,6 +710,7 @@ function handleOpenedSocket(socket,jwt) {
         socket.consumerRequestConversation()
           .then(resp => publishTo(socket,resp.body.conversationId));
       }
+      $('#close').show();
     });
     $('#close').click(() => {
       if (Object.keys(openConvs)[0]) {
@@ -721,6 +724,8 @@ function handleOpenedSocket(socket,jwt) {
       }
       socket.ws.close();
       socket.ws.onclose = (evt) => onCloseSocket(socket,evt);
+      this.hide();
+      $('#text_container').empty();
     });
   });
 }
