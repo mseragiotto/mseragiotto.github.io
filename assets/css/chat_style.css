@@ -194,7 +194,7 @@
 .popup-messages .direct-chat-name {
 	font-size: 15px;
 	font-weight: 600;
-	margin: 0 0 0 49px !important;
+	/*margin: 0 0 0 49px !important;*/
 	color: #fff;
 	opacity: 0.9;
 }
