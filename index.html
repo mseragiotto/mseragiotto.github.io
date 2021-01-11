@@ -689,6 +689,7 @@ function handleOpenedSocket(socket,jwt) {
                       '<br><div class="direct-chat-info clearfix">'+
                       	'<div class="direct-chat-name pull-left">AGENT</div>'+
                       '</div><div class="direct-chat-text pull-left">'} ${change.event.message}</div><br>`);
+          $('#text_container').scrollTop( $('#text_container')[0].scrollHeight );
       }
     }));
 
