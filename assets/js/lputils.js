@@ -44,6 +44,7 @@ class LPUtils {
       headers: {
         "content-type": "application/json"
       },
+      processData: false,
       data: "{\"authCode\" : \"" + jwt + "\"}",
       success: idpResp => res(idpResp.jwt) })));
   }
