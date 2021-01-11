@@ -215,6 +215,10 @@
     margin: -21px 0 0;
     width: 40px;
 }
+.chat_left {
+    margin-left: 0;
+}
+
 .direct-chat-reply-name {
     color: #fff;
     font-size: 15px;
