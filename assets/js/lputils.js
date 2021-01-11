@@ -34,7 +34,21 @@ class LPUtils {
 
   static auth_signup(account) {
     const jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3NvbWV0aGluZy5pdCIsInN1YiI6ImhnaHZiam5pIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiSm9obkRvZSIsInBob25lX251bWJlciI6IisxLTEwLTM0NC0zNzY1MzMzIiwiZ2l2ZW5fbmFtZSI6IlRlc3QiLCJmYW1pbHlfbmFtZSI6IlRlc3QyIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJnZW5kZXIiOiJNYWxlIiwibHBfc2RlcyI6W3sidHlwZSI6ImN0bXJpbmZvIiwiaW5mbyI6eyJjc3RhdHVzIjoiY2FuY2VsbGVkIiwiY3R5cGUiOiJ2aXAiLCJjdXN0b21lcklkIjoiYWJjMTIzNDU2IiwiYmFsYW5jZSI6Ii00MDAuOTkiLCJzb2NpYWxJZCI6IjM0NTY3ODc2NTQiLCJpbWVpIjoiOTk5NjYzMjEiLCJ1c2VyTmFtZSI6InVzZXIwMDAiLCJjb21wYW55U2l6ZSI6IjUwMCIsImFjY291bnROYW1lIjoiYmFuayBjb3JwIiwicm9sZSI6ImJyb2tlciIsImxhc3RQYXltZW50RGF0ZSI6eyJkYXkiOiIxNSIsIm1vbnRoIjoiMTAiLCJ5ZWFyIjoiMjAxNCJ9LCJyZWdpc3RyYXRpb25EYXRlIjp7ImRheSI6IjIzIiwibW9udGgiOiI1IiwieWVhciI6IjIwMTMifX19LHsidHlwZSI6InBlcnNvbmFsIiwicGVyc29uYWwiOnsiZmlyc3RuYW1lIjoiSm9obiIsImxhc3RuYW1lIjoiRG9lIiwiYWdlIjp7ImFnZSI6IjM0IiwieWVhciI6IjE5ODAiLCJtb250aCI6IjQiLCJkYXkiOiIxNSJ9LCJjb250YWN0cyI6W3siZW1haWwiOiJteW5hbWVAZXhhbXBsZS5jb20iLCJwaG9uZSI6IjM5MzQyNTkyOTAxNSJ9XSwiZ2VuZGVyIjoiTUFMRSIsImNvbXBhbnkiOiJMaXZlUGVyc29uIn19XSwiaWF0IjoxNjEwMzYzNTc5LCJleHAiOjE2MTA5NjM1Nzl9.UjUSG7aAvq-OqqR9L_iMsWh00NBjmTndOxdI5Y_aANeHBnbODBl-KBBy6sq5YjxgFFC1ABl3IEojbs-2p0TZAvmf851CLHTkUWnGxsW6sqK8Qx3wq1rB1tGVvW-BqiiBo2c0ghB4r_lcx-2PBZD8eH8GV__k_D2rPEjIYNBy0nYQtOvCgzE7l2hbC8_zB45dx5gckaGxle46g0HYkWqjEhw2ngZIVmLtGQLbxqBF7ipm9RlXRq28yZgW2IFytsPulqi5ZeOZYPhHtRE-J4eawu3JEo0hzVi_VbvukMSRO62YOvi1enbtQZbIh1ObtEZTh-qEplxP7WDVS9owsq4NHQ";
-    return new Promise((res, rej) => this.getDomain(account, "idp").then(idpDomain => $.ajax({
+    return new Promise((res, rej) => this.getDomain(account, "idp").then(idpDomain => 
+    $.ajax({
+      "url": "https://" + idpDomain + "/api/account/" + account + "/authenticate",
+      "async": true,
+      "crossDomain": true,
+      "method": "POST",
+      "headers": {
+      "content-type": "application/json"
+      },
+      "processData": false,
+      "data": "{\"authCode\" : \"" + jwt + "\"}",
+      success: idpResp => res(idpResp.jwt);
+      })));
+
+    /*$.ajax({
       url: `https://${idpDomain}/api/account/${account}/authenticate`,
       async: true,
       crossDomain: true,
@@ -48,7 +62,7 @@ class LPUtils {
       data: {
         "authCode" : jwt
       },
-      success: idpResp => res(idpResp.jwt) })));
+      success: idpResp => res(idpResp.jwt) })));*/
   }
 
   // fetch jwt from localstorage or create one
