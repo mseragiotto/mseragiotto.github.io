@@ -201,7 +201,7 @@
 .popup-messages .direct-chat-info {
     display: block;
     font-size: 12px;
-    margin-bottom: -10px;
+    margin-bottom: 0;
 }
 .popup-messages  .big-round {
     margin: -9px 0 0 !important;
