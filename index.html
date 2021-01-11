@@ -683,10 +683,10 @@ function handleOpenedSocket(socket,jwt) {
         case 'ContentEvent':
           $('#text_container').append(`
                       ${change.originatorId===me? 
-                      '<div class="direct-chat-info clearfix">'+
+                      '<br><div class="direct-chat-info clearfix">'+
                       	'<div class="direct-chat-name pull-right">YOU</div>'+
                       '</div><div class="direct-chat-text pull-right">':
-                      '<div class="direct-chat-info clearfix">'+
+                      '<br><div class="direct-chat-info clearfix">'+
                       	'<div class="direct-chat-name pull-left">AGENT</div>'+
                       '</div><div class="direct-chat-text pull-left">'} ${change.event.message}</div><br>`);
       }
