@@ -1,6 +1,7 @@
 class LPUtils {
   static getDomain(account, name) {
     const domains = account.startsWith("le") ? "hc1n.dev.lprnd.net" : "adminlogin.liveperson.net";
+    console.log(domains);
     return new Promise((res, rej) => $.ajax({
       url: `https://${domains}/csdr/account/${account}/service/${name}/baseURI.lpCsds?version=1.0`,
       jsonp: "cb",
@@ -9,7 +10,6 @@ class LPUtils {
       dataType: "jsonp",
       success: data => res(data.ResultSet.lpData[0].lpServer),
       error: (e, text) => rej(text) }));
-
   }
 
   static agentProfile(account, agentID) {
@@ -36,12 +36,12 @@ class LPUtils {
   static getJWT(account) {
     const localJWT = localStorage.getItem(`${account}-jwt`);
     if (localJWT)
-    return Promise.resolve(localJWT);else
-
-    return this.signup(account).then(newJWT => {
-      localStorage.setItem(`${account}-jwt`, newJWT);
-      return Promise.resolve(newJWT);
-    });
+      return Promise.resolve(localJWT);
+    else
+      return this.signup(account).then(newJWT => {
+        localStorage.setItem(`${account}-jwt`, newJWT);
+        return Promise.resolve(newJWT);
+      });
   }
 
   static clearJWT(account) {
