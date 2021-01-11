@@ -216,7 +216,7 @@
     width: 40px;
 }
 .chat_left {
-    margin-left: 0;
+    margin-left: 0 !important;
 }
 
 .direct-chat-reply-name {
