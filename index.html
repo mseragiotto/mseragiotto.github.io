@@ -681,7 +681,7 @@ function handleOpenedSocket(socket,jwt) {
     body => body.changes.forEach(change => {
       switch (change.event.type) {
         case 'ContentEvent':
-          $('$text_container').append(`${change.originatorId===me? 'you':'agent'}: ${change.event.message}\n`);
+          $('#text_container').append(`${change.originatorId===me? 'you':'agent'}: ${change.event.message}\n`);
       }
     }));
 
