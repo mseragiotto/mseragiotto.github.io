@@ -724,7 +724,7 @@ function handleOpenedSocket(socket,jwt) {
       }
       socket.ws.close();
       socket.ws.onclose = (evt) => onCloseSocket(socket,evt);
-      this.hide();
+      $('#close').hide();
       $('#text_container').empty();
     });
   });
