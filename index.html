@@ -708,9 +708,12 @@ function handleOpenedSocket(socket,jwt) {
       (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
 
     $('#send').click(() => {
+    	console.log('Ho cliccato');
       if (Object.keys(openConvs)[0]) {
+      	console.log('Avvio conversazione');
         publishTo(socket,Object.keys(openConvs)[0]);
       } else  {
+      	console.log('Continuo conversazione');
         socket.consumerRequestConversation()
           .then(resp => publishTo(socket,resp.body.conversationId));
       }
@@ -718,6 +721,7 @@ function handleOpenedSocket(socket,jwt) {
     });
     $('#close').click(() => {
       if (Object.keys(openConvs)[0]) {
+      	console.log('Chiudo conversazione');
         socket.updateConversationField({
             conversationId: Object.keys(openConvs)[0],
             conversationField: [{
