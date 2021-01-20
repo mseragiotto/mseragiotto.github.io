@@ -677,8 +677,9 @@ function prepareToConnect() {
 function handleOpenedSocket(socket,jwt) {
   console.log(`connection is opened.\n`);
   socket.registerRequests(apiRequestTypes);
-
+  console.log(`registrata la richiesta.\n`);
   const me = myId(jwt);
+  console.log('me = '+me+'\n');
   
   socket.initConnection({},[{ "type": ".ams.headers.ConsumerAuthentication", "jwt": jwt}]);
   socket.onNotification(withType('MessagingEvent'),
