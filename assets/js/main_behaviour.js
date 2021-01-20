@@ -25,11 +25,13 @@ function handleOpenedSocket(socket,jwt) {
   socket.registerRequests(apiRequestTypes);
   console.log(`registrata la richiesta.\n`);
   const me = myId(jwt);
-  console.log('me = '+me+'\n');
+  //console.log('me = '+me+'\n');
   
   socket.initConnection({},[{ "type": ".ams.headers.ConsumerAuthentication", "jwt": jwt}]);
+  console.log(`inizializzata la richiesta sul socket.\n`);
   socket.onNotification(withType('MessagingEvent'),
     body => body.changes.forEach(change => {
+      console.log(`Entrato on notification.\n`);
       switch (change.event.type) {
         case 'ContentEvent':
           let date = new Date();
@@ -54,6 +56,7 @@ function handleOpenedSocket(socket,jwt) {
     socket.onNotification(withSubscriptionID(resp.body.subscriptionId),
       (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
 
+    console.log(`mi trovo prima del click\n`);
     $('#send').click(() => {
     	console.log('Ho cliccato');
       if (Object.keys(openConvs)[0]) {
