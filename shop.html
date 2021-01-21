@@ -650,6 +650,7 @@ $(function(){
         content = content.parent().parent().next().children('price');
         this_price = content.prevObject[0].children[1].innerHTML.substring(2);
         price += this_price;
+        console.log("Ho aggiornato il carrello, totale: "+price);
         });
 
     /*$("#removeClass").click(function () {
