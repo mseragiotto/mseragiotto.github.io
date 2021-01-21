@@ -646,7 +646,8 @@ $(function(){
     let price = 0;
 
     $(".sell").click(function () {
-        console.log($(this).parent().parent().next().children('price').html());
+        let content = $(this).html();
+        console.log(content.parent().parent().next().children('price').html());
         });
 
     /*$("#removeClass").click(function () {
