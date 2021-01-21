@@ -644,14 +644,12 @@
     <script type="text/javascript">
 $(function(){
     let price = 0;
-    /*let date = new Date();
-    let time = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" - "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-    $('#chat_ts').html(time);*/
-    /*$(".sell").click(function () {
-        price += ('.sell').parent()
+
+    $(".sell").click(function () {
+        console.log($(this).parent().parent().next().children('price'));
         });
 
-    $("#removeClass").click(function () {
+    /*$("#removeClass").click(function () {
         $('#qnimate').removeClass('popup-box-on');
         $('#start_chat').css("display","block");
 
