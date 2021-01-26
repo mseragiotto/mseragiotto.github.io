@@ -56,7 +56,6 @@ function handleOpenedSocket(socket,jwt) {
       (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
 
     $('#send').click(() => {
-    	//console.log('Messaggio inviato');
       if (Object.keys(openConvs)[0]) {
         publishTo(socket,Object.keys(openConvs)[0]);
       } else  {
@@ -66,6 +65,9 @@ function handleOpenedSocket(socket,jwt) {
       $('#close').show();
     });
     $('#close').click(() => {
+      if (socket.ws.readyState === WebSocket.CLOSED) {
+        console.log("WEBSOCKET IS CLOSED");
+      }
       if (Object.keys(openConvs)[0]) {
       	console.log('Conversation closed by user');
         socket.updateConversationField({

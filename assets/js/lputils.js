@@ -62,6 +62,10 @@ class LPUtils {
   }}
 
 
+/*
+	WebSocket class
+
+*/
 class LPWs {
   static connect(url) {
     return new LPWs(url)._connect();
@@ -115,7 +119,6 @@ class LPWs {
     this.subs.push({
       filter: filterFunc,
       cb: onNotification });
-
   }
 
   toFuncName(reqType) {
@@ -128,7 +131,7 @@ class LPWs {
   }
 
   onmessage(msg) {
-    if (this.debug) console.log("recieved: " + msg.data);
+    console.log("Received message: " + msg.data);
     var obj = JSON.parse(msg.data);
     if (obj.kind == "resp") {
       var id = obj.reqId;
