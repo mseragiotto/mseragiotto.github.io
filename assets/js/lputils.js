@@ -131,7 +131,7 @@ class LPWs {
   }
 
   onmessage(msg) {
-    console.log("Received message: " + msg.data);
+    console.log("Received message:\n " + msg.data);
     var obj = JSON.parse(msg.data);
     if (obj.kind == "resp") {
       var id = obj.reqId;
