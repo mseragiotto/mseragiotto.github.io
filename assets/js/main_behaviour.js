@@ -65,9 +65,6 @@ function handleOpenedSocket(socket,jwt) {
       $('#close').show();
     });
     $('#close').click(() => {
-      if (socket.readyState === WebSocket.CLOSED) {
-        console.log("WEBSOCKET IS CLOSED");
-      }
       if (Object.keys(openConvs)[0]) {
       	console.log('Conversation closed by user');
         socket.updateConversationField({
