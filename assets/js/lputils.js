@@ -75,12 +75,12 @@ class LPWs {
     this.reqs = {};
     this.subs = [];
     this.url = url;
-    this.debug = debug;
+    this.debug = debug; 
   }
 
   _connect() {
     return new Promise((resolve, reject) => {
-      var ws = new WebSocket(this.url);
+      let ws = new WebSocket(this.url);
       this.ws = ws;
       ws.onopen = () => resolve(this);
       ws.onmessage = msg => this.onmessage(msg);
