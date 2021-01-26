@@ -3,7 +3,7 @@ $(document).ready(() => {
 });
 
 function prepareToConnect() {
-    console.log('Preparazione alla connessione ...');
+    console.log('Preparing connection ...');
     const account = 37717971;
     LPUtils.getJWT(account).then(jwt => {
       LPUtils.getDomain(account, 'asyncMessagingEnt').then(umsDomain => {
@@ -22,11 +22,10 @@ function prepareToConnect() {
 
 
 function handleOpenedSocket(socket,jwt) {
-  console.log('Connessione aperta');
+  console.log('Open connection');
   socket.registerRequests(apiRequestTypes);
-  console.log('Registrati i domini per le richieste');
   const me = myId(jwt);
-  console.log('JWT non autenticato -> \n'+jwt);
+  console.log('Unauthenticate JWT -> \n'+jwt);
   console.log('JWT decoded -> \n'+parseJwt(jwt));
 
   socket.initConnection({},[{ "type": ".ams.headers.ConsumerAuthentication", "jwt": jwt}]);
@@ -34,7 +33,6 @@ function handleOpenedSocket(socket,jwt) {
     body => body.changes.forEach(change => {
       switch (change.event.type) {
         case 'ContentEvent':
-          console.log('Nuovo messaggio');
           let date = new Date();
           let time = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" - "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
           $('#text_container').append(`
@@ -69,7 +67,7 @@ function handleOpenedSocket(socket,jwt) {
     });
     $('#close').click(() => {
       if (Object.keys(openConvs)[0]) {
-      	console.log('Conversazione chiusa dall\'utente');
+      	console.log('Conversation closed by user');
         socket.updateConversationField({
             conversationId: Object.keys(openConvs)[0],
             conversationField: [{

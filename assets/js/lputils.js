@@ -106,7 +106,7 @@ class LPWs {
         body: body });
 
       var str = JSON.stringify(obj);
-      console.log("Invio messaggio: \n" + str);
+      console.log("Message sent: \n" + str);
       this.ws.send(str);
     });
   }
