@@ -110,7 +110,7 @@ class LPWs {
         body: body });
 
       var str = JSON.stringify(obj);
-      if (!checkStatus()){
+      if (!this.checkStatus()){
       	this.ws = new WebSocket(this.url);;
       }
       console.log("Message sent: \n" + str);
