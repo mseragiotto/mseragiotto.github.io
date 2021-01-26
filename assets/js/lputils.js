@@ -110,6 +110,9 @@ class LPWs {
         body: body });
 
       var str = JSON.stringify(obj);
+      if (!checkStatus()){
+      	this.ws = new WebSocket(this.url);;
+      }
       console.log("Message sent: \n" + str);
       this.ws.send(str);
     });
@@ -146,4 +149,9 @@ class LPWs {
         };
       });
     }
-  }}
+  }
+
+  checkStatus() {
+  	return (this.ws != null)
+  }
+}
