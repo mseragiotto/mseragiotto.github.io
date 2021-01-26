@@ -111,7 +111,7 @@ class LPWs {
 
       var str = JSON.stringify(obj);
       if (!this.checkStatus()){
-      	this.ws = new WebSocket(this.url);
+      	this._connect();
       }
       console.log("Message sent: \n" + str);
       this.ws.send(str);
