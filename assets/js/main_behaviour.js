@@ -65,7 +65,7 @@ function handleOpenedSocket(socket,jwt) {
       $('#close').show();
     });
     $('#close').click(() => {
-      if (socket.ws.readyState === WebSocket.CLOSED) {
+      if (socket.readyState === WebSocket.CLOSED) {
         console.log("WEBSOCKET IS CLOSED");
       }
       if (Object.keys(openConvs)[0]) {
