@@ -3,6 +3,7 @@ $(document).ready(() => {
 });
 
 function prepareToConnect() {
+    console.log('Preparazione alla connessione ...');
     const account = 37717971;
     LPUtils.getJWT(account).then(jwt => {
       LPUtils.getDomain(account, 'asyncMessagingEnt').then(umsDomain => {
@@ -21,19 +22,19 @@ function prepareToConnect() {
 
 
 function handleOpenedSocket(socket,jwt) {
-  console.log(`connection is opened.\n`);
+  console.log('Connessione aperta');
   socket.registerRequests(apiRequestTypes);
-  console.log(`registrata la richiesta.\n`);
+  console.log('Registrati i domini per le richieste');
   const me = myId(jwt);
-  //console.log('me = '+me+'\n');
-  
+  console.log('JWT non autenticato -> \n'+jwt);
+  console.log('JWT decoded -> \n'+parseJwt(jwt));
+
   socket.initConnection({},[{ "type": ".ams.headers.ConsumerAuthentication", "jwt": jwt}]);
-  console.log(`inizializzata la richiesta sul socket.\n`);
   socket.onNotification(withType('MessagingEvent'),
     body => body.changes.forEach(change => {
-      console.log(`Entrato on notification.\n`);
       switch (change.event.type) {
         case 'ContentEvent':
+          console.log('Nuovo messaggio');
           let date = new Date();
           let time = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" - "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
           $('#text_container').append(`
@@ -56,14 +57,11 @@ function handleOpenedSocket(socket,jwt) {
     socket.onNotification(withSubscriptionID(resp.body.subscriptionId),
       (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
 
-    console.log(`mi trovo prima del click\n`);
     $('#send').click(() => {
-    	console.log('Ho cliccato');
+    	console.log('Messaggio inviato');
       if (Object.keys(openConvs)[0]) {
-      	console.log('Avvio conversazione');
         publishTo(socket,Object.keys(openConvs)[0]);
       } else  {
-      	console.log('Continuo conversazione');
         socket.consumerRequestConversation()
           .then(resp => publishTo(socket,resp.body.conversationId));
       }
@@ -71,7 +69,7 @@ function handleOpenedSocket(socket,jwt) {
     });
     $('#close').click(() => {
       if (Object.keys(openConvs)[0]) {
-      	console.log('Chiudo conversazione');
+      	console.log('Conversazione chiusa dall\'utente');
         socket.updateConversationField({
             conversationId: Object.keys(openConvs)[0],
             conversationField: [{
@@ -109,8 +107,6 @@ function onCloseSocket(socket,evt) {
   socket.ws = null;
   console.log(`connection was closed with code ${evt.code}\n`);
   prepareToConnect();
-  /*$('#send').prop('disabled', true).unbind('click');
-  $('#account').prop('disabled',false).val();      */  
 }
 
 function publishTo(socket,convID) {
@@ -135,6 +131,16 @@ function withType(type) {
 
 function myId(jwt) {
   return JSON.parse(atob(jwt.split('.')[1])).sub;
+}
+
+function parseJwt(token) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
 }
 
 const apiRequestTypes = ['cqm.SubscribeExConversations','ms.PublishEvent','cm.ConsumerRequestConversation','ms.SubscribeMessagingEvents','InitConnection','cm.UpdateConversationField'];
