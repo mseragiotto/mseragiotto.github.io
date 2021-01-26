@@ -58,7 +58,7 @@ function handleOpenedSocket(socket,jwt) {
       (notificationBody) => handleConversationNotification(socket,notificationBody,openConvs));
 
     $('#send').click(() => {
-    	console.log('Messaggio inviato');
+    	//console.log('Messaggio inviato');
       if (Object.keys(openConvs)[0]) {
         publishTo(socket,Object.keys(openConvs)[0]);
       } else  {
