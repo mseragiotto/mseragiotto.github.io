@@ -4,7 +4,7 @@ $(document).ready(() => {
 
 function prepareToConnect() {
     console.log('Preparing connection ...');
-    const account = 37717971;
+    const account = 65479570;
     LPUtils.getJWT(account).then(jwt => {
       LPUtils.getDomain(account, 'asyncMessagingEnt').then(umsDomain => {
         LPWs.connect(`wss://${umsDomain}/ws_api/account/${account}/messaging/consumer?v=3`)
