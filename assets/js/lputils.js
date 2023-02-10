@@ -71,7 +71,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjExODE3MjAsImlhdCI6MTYxMzQwNTc
     if (localJWT)
       return Promise.resolve(localJWT);
     else
-      return this.auth_signup(account).then(newJWT => {
+      return this.signup(account).then(newJWT => {
         localStorage.setItem(`${account}-jwt`, newJWT);
         return Promise.resolve(newJWT);
       });
